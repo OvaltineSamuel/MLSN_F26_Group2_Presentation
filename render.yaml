@@ -1,0 +1,21 @@
+# Render Blueprint — optional.
+#
+# You do NOT need this file to deploy: the dashboard flow in README.md is
+# simpler. Keep it if you would rather Render read the settings from the
+# repo, in which case use "New → Blueprint" instead of "New → Static Site".
+#
+# The deck is a single self-contained HTML file, so there is nothing to
+# build — Render just serves the repository root.
+services:
+  - type: web
+    name: crispr-net-slides
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: true
+    headers:
+      # The deck is one large HTML file that changes on every edit; let the
+      # browser revalidate so a redeploy is picked up immediately.
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
