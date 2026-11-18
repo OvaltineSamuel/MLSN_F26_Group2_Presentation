@@ -577,9 +577,6 @@ The PAM is the constraint worth mentioning: no PAM, no cut, so you cannot target
     <div class="art-wrap">
       <svg id="cas9Art" viewBox="0 0 1700 300" aria-hidden="true"></svg>
     </div>
-
-    <p class="punch reveal d5">Cas9 only cuts beside a <b>PAM</b> tag (NGG) &mdash; which constrains
-      where in the genome a guide can be placed at all.</p>
   </div>
   <div class="pageno">03</div>
 </section>
@@ -659,9 +656,6 @@ If time allows: one notebook start to finish, runs on Colab, resumes after a dis
           <li>Judge every difference against it</li>
         </ul></div>
     </div>
-
-    <p class="punch reveal d6">Built entirely from the publication &mdash; <b>the authors' source code was
-      never consulted</b>.</p>
   </div>
   <div class="pageno">05</div>
 </section>
@@ -817,7 +811,6 @@ The ensemble — an equal-weight mean of the three boosters — was our best Tie
             GC content, melting temperature</li>
           <li><b>Ridge</b> as a linear reference; <b>XGBoost, LightGBM, CatBoost</b> as boosted trees</li>
           <li>An equal-weight <b>ensemble</b> of the three boosters &mdash; the strongest Tier-1 model</li>
-          <li>No GPU required; the entire tier trains in minutes</li>
         </ul>
       </div>
       <div>
@@ -837,7 +830,7 @@ The ensemble — an equal-weight mean of the three boosters — was our best Tie
 <section class="slide content"
   data-time="20" data-notes="Tier 2 removes the hand-engineering entirely. The model receives the raw 21 letters and has to derive the features itself.
 The CNN slides filters along the sequence, detecting motifs wherever they occur. The recurrent models read it in order, accumulating context.
-Our CNN reached 0.8548, above every Tier-1 model. Our recurrent models under-perform, and that is a deliberate consequence of how we trained them — flag it, slide 19 explains it.">
+Our CNN reached 0.8548, above every Tier-1 model. Our recurrent models under-perform, and that is a deliberate consequence of how we trained them — flag it, slide 18 explains it.">
 
   <div class="head reveal d1"><span class="num">03</span>
     <div class="htxt"><h2>Tier 2</h2>
@@ -850,7 +843,6 @@ Our CNN reached 0.8548, above every Tier-1 model. Our recurrent models under-per
           <li>Input is the <b>raw 21-mer</b>, one-hot encoded &mdash; no engineered features</li>
           <li><b>CNN</b>: convolutional filters detect local motifs independently of position</li>
           <li><b>LSTM / BiLSTM</b>: recurrent layers read the sequence in order, accumulating context</li>
-          <li>The CNN exceeds every Tier-1 model; our recurrent models do not (see slide 19)</li>
         </ul>
       </div>
       <div>
@@ -903,44 +895,6 @@ The chart is the whole point of the tier: the same features added +0.0120 to our
 </section>
 
 <!-- ============================================================
-     13 — ONE SCHEDULE
-     ============================================================ -->
-<section class="slide content"
-  data-time="25" data-notes="This is a methods choice, and it is the reason one number looks bad later. Own it here, up front.
-All five deep models train on the identical schedule. Nothing is special-cased.
-So LSTM to BiLSTM is bidirectionality alone, and BiLSTM to BiLSTM-plus-bio is the biology features alone. Nothing else moved.
-The paper instead tuned every model separately with Bayesian optimisation. Both are valid; they answer different questions. Ours buys clean tier comparisons and costs us the BiLSTM.">
-
-  <div class="head reveal d1"><span class="num">03</span>
-    <div class="htxt"><h2>One schedule</h2>
-      <p class="subt">Identical hyper-parameters across every deep model</p></div></div>
-
-  <div class="body">
-    <div class="split-chart">
-      <div class="panel reveal d2">
-        <p class="kicker">Fixed for all five deep models</p>
-        <pre class="code">epochs        = 60
-batch         = 256
-learning_rate = 0.001
-rnn_layers    = 1
-patience      = 10</pre>
-      </div>
-      <div>
-        <ul class="b reveal d3">
-          <li>LSTM &rarr; BiLSTM isolates <b>bidirectionality</b></li>
-          <li>BiLSTM &rarr; BiLSTM+bio isolates the <b>biological features</b></li>
-          <li>The paper instead tuned each model by <b>Bayesian optimisation</b></li>
-        </ul>
-      </div>
-    </div>
-
-    <p class="punch reveal d5">Holding the schedule fixed makes each tier gap <b>attributable</b> &mdash;
-      at the cost of absolute performance.</p>
-  </div>
-  <div class="pageno">13</div>
-</section>
-
-<!-- ============================================================
      14 — THE METRIC
      ============================================================ -->
 <section class="slide content"
@@ -959,6 +913,9 @@ Honest caveat: rho says nothing about whether the predicted numbers are trustwor
     <ul class="b reveal d2">
       <li>Both lists are converted to <b>ranks</b> (1st, 2nd, 3rd), then correlated</li>
       <li>A model is rewarded for <b>ordering guides correctly</b>, not for predicting exact rates</li>
+      <li><b>Unlike R&sup2;</b>, which penalises how far each prediction sits from the measured value,
+        &rho; ignores the distances entirely &mdash; so a model can rank perfectly while every number
+        it outputs is wrong. Our R&sup2; is <b>0.71&ndash;0.80</b>.</li>
     </ul>
 
     <div class="cards c2 grow">
@@ -975,11 +932,8 @@ measured   0.20  0.60  0.95   ranks  1 2 3</pre>
         <p class="cap">Values are nearly <b>exact</b>, but two guides are ranked the wrong way round.</p>
       </div>
     </div>
-
-    <p class="punch reveal d6">A biologist tests only the top-ranked guides, so ordering is what matters.
-      &rho; says nothing about calibration &mdash; our R&sup2; is <b>0.71&ndash;0.80</b>.</p>
   </div>
-  <div class="pageno">14</div>
+  <div class="pageno">13</div>
 </section>
 
 <!-- ============================================================
@@ -994,8 +948,7 @@ Say explicitly: we did not beat it. Matching is not beating, and matching was th
   <svg class="dna" data-helix="700,15,58,14" style="right:-220px;bottom:-140px;width:700px;opacity:.3"></svg>
 
   <div class="head reveal d1"><span class="num">04</span>
-    <div class="htxt"><h2>The headline</h2>
-      <p class="subt">Our best model against the paper's best model</p></div></div>
+    <div class="htxt"><h2>Our best model vs the paper's</h2></div></div>
 
   <div class="body stack-center">
     <div class="versus reveal d2">
@@ -1009,11 +962,8 @@ Say explicitly: we did not beat it. Matching is not beating, and matching was th
       <p></p>
       <p class="cap mono">&plusmn; 0.0024 across ten runs</p>
     </div>
-
-    <p class="punch big reveal d7">Within the range their own repeats cover.
-      <b>Reproduced, not exceeded.</b></p>
   </div>
-  <div class="pageno">15</div>
+  <div class="pageno">14</div>
 </section>
 
 <!-- ============================================================
@@ -1031,7 +981,7 @@ And note the two Tier-3 bars are far apart: CNN+bio is our best, BiLSTM+bio is n
   <div class="body">
     <div class="chart fill reveal d2" data-chart="scoreboard"></div>
   </div>
-  <div class="pageno">16</div>
+  <div class="pageno">15</div>
 </section>
 
 <!-- ============================================================
@@ -1048,10 +998,8 @@ Because the schedule was frozen, those gaps are attributable to the tier rather 
 
   <div class="body">
     <div class="chart fill reveal d2" data-chart="tierline"></div>
-    <p class="punch reveal d4">Biology contributed more than depth &mdash; <b>+0.0120</b> against
-      <b>+0.0081</b>.</p>
   </div>
-  <div class="pageno">17</div>
+  <div class="pageno">16</div>
 </section>
 
 <!-- ============================================================
@@ -1070,7 +1018,7 @@ CNN+bio and XGBoost sit on their mean: reproduced. CNN is above all ten of their
   <div class="body">
     <div class="chart fill reveal d2" data-chart="folds"></div>
   </div>
-  <div class="pageno">18</div>
+  <div class="pageno">17</div>
 </section>
 
 <!-- ============================================================
@@ -1105,7 +1053,7 @@ Three — say this one out loud — they tuned every model, we deliberately did 
             <b>entire BiLSTM shortfall</b>.</p></div></li>
     </ol>
   </div>
-  <div class="pageno">19</div>
+  <div class="pageno">18</div>
 </section>
 
 <!-- ============================================================
@@ -1128,7 +1076,7 @@ Plus the one already stated: our recurrent models are under-trained by choice.">
       <li>Recurrent models are <b>under-trained by design</b>, not by failure</li>
     </ul>
   </div>
-  <div class="pageno">20</div>
+  <div class="pageno">19</div>
 </section>
 
 <!-- ============================================================
@@ -1158,7 +1106,7 @@ The Transformer, multi-task and stacking models are already written in the codeb
         separately</span></li>
     </ol>
   </div>
-  <div class="pageno">21</div>
+  <div class="pageno">20</div>
 </section>
 
 <!-- ============================================================
@@ -1167,7 +1115,7 @@ The Transformer, multi-task and stacking models are already written in the codeb
 <section class="slide content"
   data-time="30" data-notes="Close on what we did: reproduced a Nature result end to end, from the paper alone, without their code, and landed on a comparable number.
 Then the honest half — we did not beat it, and we know where we fall short and why.
-Thank the room, invite questions. Backup slides are 23 to 25.">
+Thank the room, invite questions. Backup slides are 22 to 25.">
 
   <svg class="dna" data-helix="800,16,64,-18" style="left:-200px;bottom:-140px;width:800px;opacity:.42"></svg>
   <svg class="dna" data-helix="560,12,48,16" style="right:-140px;top:-100px;width:560px;opacity:.3"></svg>
@@ -1188,6 +1136,44 @@ Thank the room, invite questions. Backup slides are 23 to 25.">
     </ul>
 
     <p class="punch big reveal d7"><b>Thank you &mdash; questions?</b></p>
+  </div>
+  <div class="pageno">21</div>
+</section>
+
+<!-- ============================================================
+     BACKUP: one schedule (archived from the main flow)
+     ============================================================ -->
+<section class="slide content"
+  data-time="0" data-notes="BACKUP � not in the eight minutes. This is a methods choice, and it is the reason one number looks bad later. Own it here, up front.
+All five deep models train on the identical schedule. Nothing is special-cased.
+So LSTM to BiLSTM is bidirectionality alone, and BiLSTM to BiLSTM-plus-bio is the biology features alone. Nothing else moved.
+The paper instead tuned every model separately with Bayesian optimisation. Both are valid; they answer different questions. Ours buys clean tier comparisons and costs us the BiLSTM.">
+
+  <div class="head reveal d1"><span class="num">Backup</span>
+    <div class="htxt"><h2>One schedule</h2>
+      <p class="subt">Identical hyper-parameters across every deep model</p></div></div>
+
+  <div class="body">
+    <div class="split-chart">
+      <div class="panel reveal d2">
+        <p class="kicker">Fixed for all five deep models</p>
+        <pre class="code">epochs        = 60
+batch         = 256
+learning_rate = 0.001
+rnn_layers    = 1
+patience      = 10</pre>
+      </div>
+      <div>
+        <ul class="b reveal d3">
+          <li>LSTM &rarr; BiLSTM isolates <b>bidirectionality</b></li>
+          <li>BiLSTM &rarr; BiLSTM+bio isolates the <b>biological features</b></li>
+          <li>The paper instead tuned each model by <b>Bayesian optimisation</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="punch reveal d5">Holding the schedule fixed makes each tier gap <b>attributable</b> &mdash;
+      at the cost of absolute performance.</p>
   </div>
   <div class="pageno">22</div>
 </section>

@@ -3,7 +3,7 @@
 Companion to `crispr_net_talk.html`. The slides carry headlines and bullets only;
 the explanation lives here.
 
-**Budget: 10:10 across 22 slides.** Slides 23–25 are backup — not in the clock, jump to
+**Budget: 9:45 across 21 slides.** Slides 22–25 are backup — not in the clock, jump to
 them only if asked. The deck has the same notes built in: press **N** for the presenter
 panel, which also runs an elapsed clock (**R** resets it).
 
@@ -131,7 +131,7 @@ coincidence.
 
 ---
 
-## 03 — Models (≈2:10)
+## 03 — Models (≈1:45)
 
 ### 9 — Three tiers of models · 0:30
 
@@ -164,7 +164,7 @@ The CNN slides filters along the sequence looking for local motifs. The recurren
 read it in order, carrying context along.
 
 Our CNN did well — 0.8548, better than every Tier-1 model. Our recurrent models did not.
-Flag that and move on; slide 19 explains exactly why.
+Flag that and move on; slide 18 explains exactly why.
 
 ### 12 — Tier 3: sequence + biophysics · 0:30
 
@@ -182,25 +182,12 @@ training. The GPU does not help.
 backbone. They did nothing for our BiLSTM (−0.0019), which is the tuning problem showing
 up again.
 
-### 13 — One schedule · 0:25
-
-This is a methods choice, and it is the reason one of our numbers looks bad later. Own it
-here, up front.
-
-All five deep models train on the identical schedule. Nothing is special-cased.
-
-So LSTM → BiLSTM is bidirectionality and nothing else. BiLSTM → BiLSTM+bio is the biology
-features and nothing else.
-
-The paper instead tuned every model separately with Bayesian optimisation. Both are valid;
-they answer different questions. Ours buys clean tier comparisons, and it costs us the
-BiLSTM.
 
 ---
 
 ## 04 — Results (≈3:00)
 
-### 14 — The metric · 0:30
+### 13 — The metric · 0:30
 
 Before any result: what the score means. Mostly ML people here, so this is quick, but the
 ordering point matters.
@@ -220,7 +207,7 @@ tests the top few. Only the ordering determines what gets tested.
 **Honest caveat:** it says nothing about whether the predicted numbers themselves are
 trustworthy. Our R² is 0.71–0.80 — quote that if someone asks.
 
-### 15 — The headline · 0:25
+### 14 — Our best model vs the paper's · 0:25
 
 Say it plainly and do not oversell it.
 
@@ -232,7 +219,7 @@ cover. That is what reproducing a result looks like.
 
 **Say explicitly: we did not beat it.** Matching is not beating, and matching was the goal.
 
-### 16 — Scoreboard · 0:25
+### 15 — Scoreboard · 0:25
 
 All ten models, same held-out test set, coloured by tier.
 
@@ -242,7 +229,7 @@ worse. The three boosters cluster tightly. CNN+bio on top.
 And notice the two Tier-3 bars are far apart: CNN+bio is our best, BiLSTM+bio is near the
 bottom. Same tier, same features. That is the tuning gap, not the tier.
 
-### 17 — Tier by tier · 0:20
+### 16 — Tier by tier · 0:20
 
 The ladder worked. Each tier beat the one below it.
 
@@ -251,7 +238,7 @@ Best Tier 1 to best Tier 2: +0.008. Tier 2 to Tier 3: +0.012.
 Because the schedule was frozen, those gaps are attributable to the tier rather than to
 tuning. So on this problem, biology was worth more than depth.
 
-### 18 — Against the paper · 0:30
+### 17 — Against the paper · 0:30
 
 **This is the slide I would most like people to take away. Give it time.**
 
@@ -267,7 +254,7 @@ published mean. The coral dot is us.
 - BiLSTM: 4.7σ below their worst fold. That one is ours to own, and the next slide explains
   it.
 
-### 19 — Why we differ · 0:30
+### 18 — Why we differ · 0:30
 
 Three reasons, and none of them is "we got it wrong".
 
@@ -281,13 +268,13 @@ Three reasons, and none of them is "we got it wrong".
 
 *(If someone asks about the error bars: theirs is ten different splits, ours was three
 weight initialisations on one split. We measured the real split-to-split spread ourselves —
-0.0053 — and that is what the z-scores on slide 18 use. It is on backup slide 24.)*
+0.0053 — and that is what the z-scores on slide 17 use. It is on backup slide 24.)*
 
 ---
 
 ## 05 / 06 — Close (≈1:10)
 
-### 20 — Limitations · 0:20
+### 19 — Limitations · 0:20
 
 Quick and honest.
 
@@ -297,7 +284,7 @@ counterpart on our side, which on two of three nucleases was their best conventi
 
 Plus the one already said: our recurrent models are under-trained by choice.
 
-### 21 — What's next · 0:20
+### 20 — What's next · 0:20
 
 Five things, roughly in order of value.
 
@@ -308,7 +295,7 @@ next step.
 The Transformer, multi-task and stacking models are already written in the codebase. They
 just have not been run.
 
-### 22 — Summary · 0:30
+### 21 — Summary · 0:30
 
 The slide carries only what we established, so **say the honest half out loud** — it does
 not need to be on screen:
@@ -320,11 +307,26 @@ not need to be on screen:
 That pairing — a clean slide and a candid sentence — lands better than a column of
 caveats nobody reads.
 
-Thank the room, invite questions. Backup slides are 23–25.
+Thank the room, invite questions. Backup slides are 22–25.
 
 ---
 
 ## Backup slides (not in the clock)
+
+**22 — One schedule.** *(Archived from the main flow — no longer in the eight minutes, but worth having if anyone asks why the BiLSTM underperforms.)*
+
+This is the methods choice behind the BiLSTM shortfall. It is also the answer to "why
+didn't you just tune it?"
+
+All five deep models train on the identical schedule. Nothing is special-cased.
+
+So LSTM → BiLSTM is bidirectionality and nothing else. BiLSTM → BiLSTM+bio is the biology
+features and nothing else.
+
+The paper instead tuned every model separately with Bayesian optimisation. Both are valid;
+they answer different questions. Ours buys clean tier comparisons, and it costs us the
+BiLSTM.
+
 
 **23 — Full scoreboard.** The complete table with the paper's value and the delta where one
 exists. LightGBM, CatBoost and Ensemble have no paper row because the paper never tried

@@ -14,7 +14,7 @@ Samuel (tech lead) · Lloyd · Caleb · AJ · Saishyam · Vincent
 
 | File | What it is |
 |---|---|
-| `index.html` | The entire deck — 22 talk slides plus 3 backup slides |
+| `index.html` | The entire deck — 21 talk slides plus 4 backup slides |
 | `SPEAKER_SCRIPT.md` | Per-slide script, timings, and likely Q&A |
 | `render.yaml` | Optional Render blueprint (see below — you can ignore it) |
 
@@ -40,7 +40,7 @@ The slide canvas is a fixed 1920×1080 stage scaled to whatever window it is in,
 it looks identical on a laptop, a projector, or a phone. It will letterbox rather
 than reflow.
 
-Budget is **10:10** across the 22 talk slides. Slides 23–25 are backup — they are
+Budget is **9:45** across the 21 talk slides. Slides 22–25 are backup — they are
 outside the clock and only exist to answer questions.
 
 ---
