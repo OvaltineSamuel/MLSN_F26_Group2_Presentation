@@ -3,7 +3,7 @@
 Companion to `crispr_net_talk.html`. The slides carry headlines and bullets only;
 the explanation lives here.
 
-**Budget: 9:45 across 21 slides.** Slides 22–25 are backup — not in the clock, jump to
+**Budget: 9:40 across 20 slides.** Slide 21 is the thank-you slide, and 22–25 are backup, not in the clock, jump to
 them only if asked. The deck has the same notes built in: press **N** for the presenter
 panel, which also runs an elapsed clock (**R** resets it).
 
@@ -17,7 +17,7 @@ trying to beat the paper, and we did not. Saying so plainly is the strongest thi
 
 ## 1 — Title · 0:10
 
-Hello — we're Group 2. Eight minutes: what CRISPR is, the dataset, the three tiers of
+Hello, we're Group 2. Eight minutes: what CRISPR is, the dataset, the three tiers of
 models we built, and what the numbers actually mean.
 
 Say up front that this was a reproduction, so nobody spends the talk waiting for a win.
@@ -30,11 +30,11 @@ Say up front that this was a reproduction, so nobody spends the talk waiting for
 
 Start from zero; most of the room is not biology.
 
-DNA is a text written in four letters — A, C, G, T. About three billion of them in every
+DNA is a text written in four letters, A, C, G, T. About three billion of them in every
 one of your cells. It comes in two strands, and the second is completely determined by the
 first: A always pairs with T, C always with G.
 
-Point at the model on the left — that is the actual shape of the molecule, and the rungs
+Point at the model on the left, that is the actual shape of the molecule, and the rungs
 between the two strands are those pairs.
 
 Finish on the pairing rule, because it sets up the next slide: a short piece of RNA can
@@ -43,22 +43,22 @@ match.
 
 ### 3 — How CRISPR cuts · 0:55
 
-**Background first — two sentences, no more.** CRISPR is a bacterial immune system:
+**Background first, two sentences, no more.** CRISPR is a bacterial immune system:
 bacteria keep fragments of viruses they have survived and use them to recognise the virus
 if it returns. In 2012 Jinek, Charpentier and Doudna showed the system could be
 reprogrammed to cut *any* chosen DNA sequence, and that won the 2020 Nobel Prize in
 Chemistry.
 
 **Why the room should care:** it made targeted genome editing cheap and routine. An
-approved sickle-cell therapy, engineered crops, diagnostics — and it is now standard
+approved sickle-cell therapy, engineered crops, diagnostics, and it is now standard
 equipment in molecular biology labs.
 
-**Then the mechanism — let the animation do the work.** The guide RNA scans along the DNA,
+**Then the mechanism, let the animation do the work.** The guide RNA scans along the DNA,
 testing positions. When the letters match it locks on and the target lights up. Then Cas9
 cuts, three letters in from the PAM.
 
 The PAM is the constraint worth naming: a three-letter tag (NGG) just past the target. No
-PAM, no cut — so you cannot target anywhere you like. It matters later because it is a
+PAM, no cut, so you cannot target anywhere you like. It matters later because it is a
 column in the data.
 
 ### 4 — The problem · 0:40
@@ -68,7 +68,7 @@ column in the data.
 Both of these are real rows from the dataset. Same length, same chemistry, both perfectly
 valid guides. One cuts about five times more often than the other.
 
-Nothing in the sequence makes that obvious to a human — and that is exactly the point.
+Nothing in the sequence makes that obvious to a human, and that is exactly the point.
 
 And no simple rule predicts it, which is why this is a learning problem rather than a
 lookup.
@@ -85,8 +85,8 @@ the published description alone, and find out whether we land on the same answer
 **Emphasise: we worked from the paper, not from their code.** We never opened their
 repository. Every model here is our own implementation.
 
-Three things. *Reproduce* — rebuild the model ladder and compare. *Extend* — add models the
-paper never tried. *Measure* — work out how much our own number wobbles before claiming
+Three things. *Reproduce*, rebuild the model ladder and compare. *Extend*, add models the
+paper never tried. *Measure*, work out how much our own number wobbles before claiming
 anything about theirs. The third one is the part we are most pleased with, and it comes
 back at the end.
 
@@ -102,16 +102,16 @@ disconnect, and 294 automated tests guard the split and the data.
 This is what one row looks like. Read it left to right.
 
 `gRNA_Seq` is the 20-letter guide. `PAM` is the three-letter tag we just saw. The `21mer`
-is what we actually feed the model — the guide plus the first letter of the PAM.
+is what we actually feed the model, the guide plus the first letter of the PAM.
 
-The last three columns are the measured indel rates — how often the cut actually happened —
+The last three columns are the measured indel rates, how often the cut actually happened,
 for three different versions of Cas9. Those three are our prediction targets. We used the
 first one.
 
 ### 7 — The paper · 0:20
 
 Wang et al., Nature Communications, September 2019. Open access, and the supplementary data
-is downloadable — which is how we have their numbers.
+is downloadable, which is how we have their numbers.
 
 The three nucleases are three versions of the same protein, engineered to be more precise.
 We ran WT-SpCas9, the original and most widely used one.
@@ -122,7 +122,7 @@ Their seven models are the ladder we set out to reproduce.
 
 Thirty seconds on hygiene, because every number later depends on it.
 
-Zero duplicate sequences — so a train/test leak is structurally impossible, not merely
+Zero duplicate sequences, so a train/test leak is structurally impossible, not merely
 unlikely.
 
 The split is frozen into the cleaned data file with seed 42. Every model in every tier sees
@@ -149,11 +149,11 @@ The cheap tier. No GPU, trains in minutes.
 We turn each guide into 439 numbers: letter counts, position-by-position identity, GC
 content, k-mer counts, melting temperature. Then hand them to tree models.
 
-**The headline here:** our XGBoost scored 0.8454. The paper's XGBoost scored 0.8454 —
+**The headline here:** our XGBoost scored 0.8454. The paper's XGBoost scored 0.8454,
 matched to four decimal places, and on *less* training data than they used. That is the
 moment we believed the pipeline was right.
 
-The ensemble — a mean of the three boosters — was our best Tier-1 model at 0.8467.
+The ensemble, a mean of the three boosters, was our best Tier-1 model at 0.8467.
 
 ### 11 — Tier 2: sequence-only deep models · 0:20
 
@@ -163,7 +163,7 @@ work out for itself which positions and patterns matter.
 The CNN slides filters along the sequence looking for local motifs. The recurrent models
 read it in order, carrying context along.
 
-Our CNN did well — 0.8548, better than every Tier-1 model. Our recurrent models did not.
+Our CNN did well, 0.8548, better than every Tier-1 model. Our recurrent models did not.
 Flag that and move on; slide 18 explains exactly why.
 
 ### 12 — Tier 3: sequence + biophysics · 0:30
@@ -171,14 +171,14 @@ Flag that and move on; slide 18 explains exactly why.
 Tier 3 is where the paper's best model lives, and ours too.
 
 We add roughly 100 biophysical descriptors: RNA secondary-structure free energy from
-ViennaRNA — how tightly the guide folds back on itself — plus melting temperatures for the
+ViennaRNA, how tightly the guide folds back on itself, plus melting temperatures for the
 guide and its sub-regions, and GC content. Things the letters imply but do not state.
 
 It costs 65 minutes of single-threaded CPU folding per nuclease before a single epoch of
 training. The GPU does not help.
 
 **The chart is the point of the tier.** The same features added +0.0120 to our CNN and
-+0.0115 to the paper's RNN — the effect reproduces almost exactly, on a different
++0.0115 to the paper's RNN, the effect reproduces almost exactly, on a different
 backbone. They did nothing for our BiLSTM (−0.0019), which is the tuning problem showing
 up again.
 
@@ -192,7 +192,7 @@ up again.
 Before any result: what the score means. Mostly ML people here, so this is quick, but the
 ordering point matters.
 
-Spearman converts both lists to **ranks** — 1st, 2nd, 3rd — and correlates the ranks, not
+Spearman converts both lists to **ranks**, 1st, 2nd, 3rd, and correlates the ranks, not
 the values. The slide shows the ranks explicitly under each row; point at them.
 
 **Left:** the predicted values are all wrong, but they rank the three guides in the same
@@ -205,7 +205,7 @@ Why it is the right metric here: a biologist orders the candidate guides for a g
 tests the top few. Only the ordering determines what gets tested.
 
 **Honest caveat:** it says nothing about whether the predicted numbers themselves are
-trustworthy. Our R² is 0.71–0.80 — quote that if someone asks.
+trustworthy. Our R² is 0.71–0.80, quote that if someone asks.
 
 ### 14 — Our best model vs the paper's · 0:25
 
@@ -223,7 +223,7 @@ cover. That is what reproducing a result looks like.
 
 All ten models, same held-out test set, coloured by tier.
 
-Worth pointing at: Ridge at the bottom — a linear model on these features really is much
+Worth pointing at: Ridge at the bottom, a linear model on these features really is much
 worse. The three boosters cluster tightly. CNN+bio on top.
 
 And notice the two Tier-3 bars are far apart: CNN+bio is our best, BiLSTM+bio is near the
@@ -242,14 +242,14 @@ tuning. So on this problem, biology was worth more than depth.
 
 **This is the slide I would most like people to take away. Give it time.**
 
-We pulled the paper's own per-fold supplementary data — ten runs per model — so these are
+We pulled the paper's own per-fold supplementary data, ten runs per model, so these are
 exact comparisons, not values read off a figure.
 
 The grey band is the full range their ten runs covered. The vertical line is their
 published mean. The coral dot is us.
 
 - XGBoost, CNN+bio, Ridge: inside their range. Reproduced.
-- CNN: above all ten of their runs. Interesting — but only 1.5σ once our own split noise is
+- CNN: above all ten of their runs. Interesting, but only 1.5σ once our own split noise is
   counted. Suggestive, not a result.
 - BiLSTM: 4.7σ below their worst fold. That one is ours to own, and the next slide explains
   it.
@@ -263,57 +263,54 @@ Three reasons, and none of them is "we got it wrong".
 2. They selected features with Tree SHAP from a pool of 1,031; we feed all 439 with no
    selection step.
 3. **Say this one out loud.** They tuned every model; we deliberately did not, so the tier
-   comparison stays controlled. That is the entire BiLSTM gap — and we can prove it: a
+   comparison stays controlled. That is the entire BiLSTM gap, and we can prove it: a
    40-trial search on the same architecture reached 0.8637.
 
 *(If someone asks about the error bars: theirs is ten different splits, ours was three
-weight initialisations on one split. We measured the real split-to-split spread ourselves —
-0.0053 — and that is what the z-scores on slide 17 use. It is on backup slide 24.)*
+weight initialisations on one split. We measured the real split-to-split spread ourselves,
+0.0053, and that is what the z-scores on slide 17 use. It is on backup slide 24.)*
 
 ---
 
-## 05 / 06 — Close (≈1:10)
+## 05 / 06 — Close (≈1:35)
 
-### 19 — Limitations · 0:20
+### 19 — Limitations and future work · 0:35
 
-Quick and honest.
+Keep this light; it is the last content slide before the summary.
 
-One split, not ten — so our error bar is not measuring what theirs measures. WT only; the
-other two nucleases are untouched. And no MLP — the one published baseline with no
-counterpart on our side, which on two of three nucleases was their best conventional model.
+**Limitations.** The honest framing is that we were a student team on free Colab GPUs for
+one quarter. That is the reason behind all four, not a methodological failure. One split
+instead of ten because ten costs ten times the compute. One nuclease because Tier 3 needs
+an hour of CPU folding per nuclease before training even starts. And no MLP simply because
+we ran out of time.
 
-Plus the one already said: our recurrent models are under-trained by choice.
+**Future work.** Build the models we did not reach, which covers both the paper's own RNN
+and RNN + biofeatures and the Transformer, multi-task and stacked models already written in
+our codebase. Then a full tenfold so our error bar measures the same thing theirs does, and
+finally the other two nucleases.
 
-### 20 — What's next · 0:20
+### 20 — Summary · 0:30
 
-Five things, roughly in order of value.
-
-The RNN and RNN+bio are the paper's own winning models — the direct counterpart to our
-Tier 2 and Tier 3. We ran out of GPU time before reaching them, and they are the obvious
-next step.
-
-The Transformer, multi-task and stacking models are already written in the codebase. They
-just have not been run.
-
-### 21 — Summary · 0:30
-
-The slide carries only what we established, so **say the honest half out loud** — it does
+The slide carries only what we established, so **say the honest half out loud**; it does
 not need to be on screen:
 
 > We did not beat the paper. Our CNN edge is not statistically real once our own split
 > noise is counted, and our BiLSTM is genuinely below theirs. We know exactly where we
 > fall short and why.
 
-That pairing — a clean slide and a candid sentence — lands better than a column of
-caveats nobody reads.
+A clean slide plus a candid sentence lands better than a column of caveats nobody reads.
 
-Thank the room, invite questions. Backup slides are 22–25.
+### 21 — Thank you · not in the clock
+
+Leave this one up while taking questions. Everything after it is backup: 22 the frozen
+training schedule, 23 the full scoreboard, 24 our split noise, 25 the tuning study.
+
 
 ---
 
 ## Backup slides (not in the clock)
 
-**22 — One schedule.** *(Archived from the main flow — no longer in the eight minutes, but worth having if anyone asks why the BiLSTM underperforms.)*
+**22, One schedule.** *(Archived from the main flow, no longer in the eight minutes, but worth having if anyone asks why the BiLSTM underperforms.)*
 
 This is the methods choice behind the BiLSTM shortfall. It is also the answer to "why
 didn't you just tune it?"
@@ -328,18 +325,18 @@ they answer different questions. Ours buys clean tier comparisons, and it costs 
 BiLSTM.
 
 
-**23 — Full scoreboard.** The complete table with the paper's value and the delta where one
+**23, Full scoreboard.** The complete table with the paper's value and the delta where one
 exists. LightGBM, CatBoost and Ensemble have no paper row because the paper never tried
 them.
 
-**24 — Split noise.** We retrained XGBoost seven times, changing only which 15% is held out.
-Nothing else moved. Spread 0.0175 — nearly twice the margin our CNN appeared to beat the
+**24, Split noise.** We retrained XGBoost seven times, changing only which 15% is held out.
+Nothing else moved. Spread 0.0175, nearly twice the margin our CNN appeared to beat the
 paper by. That is why we will not claim the CNN result.
 
-**25 — Tuning study.** 40 Optuna trials on the BiLSTM+bio architecture. Learning rate and
+**25, Tuning study.** 40 Optuna trials on the BiLSTM+bio architecture. Learning rate and
 weight decay together account for 91% of the variance; hidden size, layers and merge mode
 account for almost nothing. On this problem, how you train matters far more than what you
-train — which is why the BiLSTM gap is a tuning gap, not an architecture gap.
+train, which is why the BiLSTM gap is a tuning gap, not an architecture gap.
 
 ---
 
@@ -347,7 +344,7 @@ train — which is why the BiLSTM gap is a tuning gap, not an architecture gap.
 
 **"Did you beat the paper?"**
 No, and we are not claiming to. We matched their headline result. Our CNN is above all ten
-of their CNN runs, but once we account for our own split-to-split noise that is only 1.5σ —
+of their CNN runs, but once we account for our own split-to-split noise that is only 1.5σ,
 not enough to call a result.
 
 **"Why is your BiLSTM so much worse?"**
@@ -360,7 +357,7 @@ We measured it. Seven different splits of the same data move XGBoost's score by 
 That measured spread is what we use when judging any difference. (Backup slide 24.)
 
 **"Why only Spearman?"**
-It is the paper's headline metric, and it matches the use case — you pick the top few
+It is the paper's headline metric, and it matches the use case, you pick the top few
 guides, so only the ordering matters. Our R² is 0.71–0.80 if you want the calibration
 number, which is the less flattering one.
 
@@ -371,4 +368,4 @@ Cas9, so it was the one to do first.
 
 **"Did you use their code?"**
 No. Everything is our own implementation from the published description. We used their
-supplementary *data* — the dataset and their per-fold results — but never their source.
+supplementary *data*, the dataset and their per-fold results, but never their source.
