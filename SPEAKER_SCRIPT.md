@@ -278,16 +278,17 @@ weight initialisations on one split. We measured the real split-to-split spread 
 
 Keep this light; it is the last content slide before the summary.
 
-**Limitations.** The honest framing is that we were a student team on free Colab GPUs for
-one quarter. That is the reason behind all four, not a methodological failure. One split
-instead of ten because ten costs ten times the compute. One nuclease because Tier 3 needs
-an hour of CPU folding per nuclease before training even starts. And no MLP simply because
-we ran out of time.
+**Limitations.** Two of them, and both are honest rather than methodological: we were a
+student team on free Colab GPUs for a single quarter.
 
-**Future work.** Build the models we did not reach, which covers both the paper's own RNN
-and RNN + biofeatures and the Transformer, multi-task and stacked models already written in
-our codebase. Then a full tenfold so our error bar measures the same thing theirs does, and
-finally the other two nucleases.
+Worth saying out loud what that cost us, since it is deliberately not on the slide. One
+split instead of the paper's ten, because ten runs cost ten times the GPU budget. One
+nuclease, because Tier 3 needs an hour of CPU folding per nuclease before training even
+starts. And no MLP baseline, because we ran out of time.
+
+**Future work.** Build the models we did not reach: the paper's RNN + biofeatures, the
+Transformer and multi-task models already written in our codebase, and the MLP. Then a full
+tenfold so our evaluation matches theirs, and finally the other two nucleases.
 
 ### 20 — Summary · 0:30
 

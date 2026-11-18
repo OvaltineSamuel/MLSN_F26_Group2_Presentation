@@ -399,13 +399,16 @@ ol.reasons li{display:grid;grid-template-columns:120px 1fr;gap:36px;align-items:
 ol.reasons li:last-child{border-bottom:1px solid var(--rule)}
 ol.reasons i{font-style:normal;font-family:var(--font-display);font-size:64px;font-weight:600;
   color:var(--coral);font-variant-numeric:lining-nums;line-height:.95}
-ol.reasons h4{font-family:var(--font-body);font-size:26px;font-weight:800;letter-spacing:.12em;
+ol.reasons h4{font-family:var(--font-body);font-size:33px;font-weight:800;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink);margin:0 0 14px}
 ol.reasons p{font-family:var(--font-body);font-size:30px;font-weight:300;line-height:1.36;
   color:var(--ink-soft);margin:0}
 ol.reasons p b{color:var(--ink);font-weight:700}
 
 /* slide 19: limitations beside future work */
+/* slide 19: limitations stacked above future work, full width */
+.stack-sections{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:56px}
+.stack-sections .kicker{margin-bottom:24px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:70px;flex:1 1 auto;align-content:center}
 .two-col .kicker{margin-bottom:26px}
 ol.steps.compact{display:block;flex:none}
@@ -702,12 +705,12 @@ The last three columns are measured indel rates for three Cas9 variants. Those a
 
     <svg class="arrows" viewBox="0 0 1920 1080" id="dataArrows" aria-hidden="true"></svg>
 
-    <div class="anno reveal d3" data-x="0.339" data-from="0.230" style="left:379px;top:500px;width:240px">
+    <div class="anno reveal d3" data-x="0.339" style="left:379px;top:500px;width:240px">
       <b>PAM</b><br>required for cutting</div>
-    <div class="anno reveal d4" data-x="0.469" data-from="0.469" style="left:785px;top:500px;width:250px">
+    <div class="anno reveal d4" data-x="0.469" style="left:743px;top:500px;width:250px">
       <b>21mer</b><br>the model input</div>
-    <div class="anno reveal d5" data-x="0.645,0.788,0.956" data-from="0.645" style="left:1085px;top:500px;width:500px">
-      <b>Measured indel rate</b><br>three Cas9 variants, the prediction targets</div>
+    <div class="anno reveal d5" data-x="0.645,0.788,0.956" style="left:1085px;top:500px;width:600px">
+      <b>Measured insertion/deletion rate</b><br>the &ldquo;indel&rdquo; rate, for three Cas9 variants</div>
   </div>
   <div class="pageno">06</div>
 </section>
@@ -1084,45 +1087,39 @@ Three, say this one out loud, they tuned every model, we deliberately did not. T
      19 — LIMITATIONS AND FUTURE WORK
      ============================================================ -->
 <section class="slide content"
-  data-time="35" data-notes="Keep this light, it is the last content slide before the summary.
-Limitations: we were a student team on free Colab GPUs for one quarter. That is the honest reason for all three, not a methodological failure. One split instead of ten because ten costs ten times the compute. One nuclease because Tier 3 needs an hour of CPU folding per nuclease before training even starts. And no MLP simply because we ran out of time.
-Future work: build the models we did not reach, which includes the paper's own RNN and RNN+biofeatures as well as the Transformer, multi-task and stacked models already written in our codebase. Then a full tenfold so our error bar matches theirs, and the other two nucleases.">
+  data-time="35" data-notes="Keep this light; it is the last content slide before the summary.
+Limitations: we were a student team on free Colab GPUs for one quarter. Compute and time are the honest reasons, not a methodological failure. Ten splits would have cost ten times the GPU budget, and Tier 3 needs an hour of CPU folding per nuclease before training even starts.
+Future work: build the models we did not reach, which includes the paper's own RNN and RNN + biofeatures, the Transformer and multi-task models already written in our codebase, and the MLP baseline. Then a full tenfold so our evaluation matches theirs, and the other two nucleases.">
 
-  <svg class="dna" data-helix="580,12,48,-14" style="right:-180px;bottom:-120px;width:580px;opacity:.26"></svg>
+  <svg class="dna" data-helix="560,12,46,-14" style="right:-190px;bottom:-130px;width:560px;opacity:.24"></svg>
 
   <div class="head reveal d1"><span class="num">05</span>
     <div class="htxt"><h2>Limitations and future work</h2></div></div>
 
   <div class="body">
-    <div class="two-col">
+    <div class="stack-sections">
       <div>
         <p class="kicker reveal d2">Limitations</p>
-        <ul class="b md reveal d3">
-          <li><b>Limited compute.</b> One quarter on free Colab GPUs, so every run had to be
-            chosen carefully.</li>
-          <li><b>A single split</b>, not the paper's ten, which makes our error bar smaller than
-            theirs in scope.</li>
-          <li><b>One nuclease.</b> We ran WT-SpCas9 only; the two high-fidelity variants are
-            untouched.</li>
-          <li><b>One baseline missing.</b> We never built the paper's MLP.</li>
+        <ul class="b big reveal d3">
+          <li><b>Limited compute.</b> One quarter on free Colab GPUs.</li>
+          <li><b>Limited time.</b> One academic quarter, alongside coursework.</li>
         </ul>
       </div>
+
       <div>
         <p class="kicker reveal d4">Future work</p>
-        <ol class="steps compact">
-          <li class="reveal d5"><i>01</i><span>Build and train <b>the other models</b>: the paper's
-            RNN and RNN + biofeatures, plus the Transformer, multi-task and stacked models already
-            written in our codebase.</span></li>
-          <li class="reveal d6"><i>02</i><span>Run a full <b>tenfold</b> evaluation so our error bar
-            measures the same thing theirs does.</span></li>
-          <li class="reveal d7"><i>03</i><span>Extend to <b>eSpCas9(1.1)</b> and
-            <b>SpCas9-HF1</b>.</span></li>
-        </ol>
+        <ul class="b big reveal d5">
+          <li><b>Build and train the other models:</b> RNN + biofeatures, Transformer, MLP,
+            multi-task, stacked.</li>
+          <li><b>Run a full tenfold evaluation</b> to match the paper's.</li>
+          <li><b>Extend to the other two nucleases:</b> eSpCas9(1.1) and SpCas9-HF1.</li>
+        </ul>
       </div>
     </div>
   </div>
   <div class="pageno">19</div>
 </section>
+
 
 
 <!-- ============================================================
@@ -1996,8 +1993,11 @@ function drawDataArrows(){
     var nb = box(note);
     var targets = note.getAttribute('data-x').split(',').map(Number)
                       .map(function(f){ return ib.x + f * ib.w; });
-    var fromAttr = note.getAttribute('data-from');
-    var tailX = fromAttr ? ib.x + Number(fromAttr) * ib.w : nb.x + 14;
+    /* the tail leaves from the middle of the caption's bold label, so each
+       arrow visibly belongs to the words underneath it */
+    var lab = note.querySelector('b');
+    var lb = lab ? box(lab) : nb;
+    var tailX = lb.x + lb.w / 2;
     var tailY = nb.y - 16;
 
     targets.forEach(function(tx){
